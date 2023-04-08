@@ -1,20 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import {Provider} from 'react-redux';
+import { applyMiddleware,compose, createStore } from 'redux';
+import thunk from 'redux-thunk';
+import reducers from './reducers' ;
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Recipes } from './src/screens/Recipes';
+import Home from './src/screens/Home';
+import {DetailMeal} from './src/screens/DetailMeal';
+import User from './src/screens/User';
+  export default function App() {
+    const Stack = createNativeStackNavigator();
+    const store = createStore(reducers, compose(applyMiddleware(thunk)));
+    return (
+      <NavigationContainer>
+      <Provider store={store}>
+       <Stack.Navigator>
+       <Stack.Screen 
+        name="Home"
+         component={Home}
+         options={{headerShown: false}}
+         />
+         <Stack.Screen  
+         name="Recipes"
+         options={{headerShown: false}}
+         component={Recipes}
+         />
+         <Stack.Screen  
+         name="DetailMeal"
+         options={{headerShown: false}}
+         component={DetailMeal}
+         />
+          <Stack.Screen  
+           name="User"
+           options={{headerShown: false}}
+         component={User}
+         />
+     </Stack.Navigator>
+      </Provider >
+      </NavigationContainer>
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    );
+  }
